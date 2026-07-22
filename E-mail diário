@@ -1,0 +1,38 @@
+import smtplib
+import os
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
+from datetime import datetime
+import anthropic
+
+client = anthropic.Anthropic(api_key=os.environ["ANTHROPIC_API_KEY"])
+
+prompt = """Gere um relatório diário sobre 5 frases em inglês dentre os níveis b2 a c2 (explicar a gramática da frase e como usar em outros contextos.  Quando for dar definição de palavras use a definição do Cambridge Dictionary. Evite falar dos mesmos tópicos e temas de gramática)
+
+1 texto  em inglês de até 1000 palavras. Temas: desenvolvendo pessoal, produtividade, neurociencia,  comportamento humano e outros temas semelhantes. Sempre traga um insight interessante e/ou desconhecido. O objetivo desse texto é me informar e treinar meu inglês.
+
+Um fato aleatório sobre conhecimentos Gerais."""
+
+response = client.messages.create(
+    model="claude-sonnet-5",
+    max_tokens=1000,
+    messages=[{"role": "user", "content": prompt}]
+)
+
+relatorio = response.content[0].text
+
+remetente = os.environ["mouratestando123@gmail.com"]
+senha = os.environ["moura123@"]
+destinatario = os.environ["joatamjm@gmail.com"]
+
+msg = MIMEMultipart()
+msg["From"] = remetente
+msg["To"] = destinatario
+msg["Subject"] = f"Relatório Diário - {datetime.now().strftime('%d/%m/%Y')}"
+msg.attach(MIMEText(relatorio, "plain", "utf-8"))
+
+with smtplib.SMTP_SSL("smtp.gmail.com", 465) as server:
+    server.login(remetente, senha)
+    server.sendmail(remetente, destinatario, msg.as_string())
+
+print("Relatório enviado!")
