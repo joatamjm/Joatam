@@ -1,11 +1,13 @@
+
 import smtplib
 import os
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from datetime import datetime
-import anthropic
+import google.generativeai as genai
 
-client = anthropic.Anthropic(api_key=os.environ["ANTHROPIC_API_KEY"])
+genai.configure(api_key=os.environ["GEMINI_API_KEY"])
+model = genai.GenerativeModel("gemini-2.5-flash")
 
 prompt = """Gere um relatório diário sobre 5 frases em inglês dentre os níveis B2 a C1, 
 explicando o significado de cada frase e como usar em outros contextos. Quando for dar 
@@ -17,13 +19,8 @@ e/ou desconhecido, para me informar e treinar meu inglês.
 
 Um fato aleatório sobre conhecimentos gerais."""
 
-response = client.messages.create(
-    model="claude-sonnet-5",
-    max_tokens=2000,
-    messages=[{"role": "user", "content": prompt}]
-)
-
-relatorio = response.content[0].text
+response = model.generate_content(prompt)
+relatorio = response.text
 
 remetente = os.environ["EMAIL_FROM"]
 senha = os.environ["EMAIL_APP_PASSWORD"]
