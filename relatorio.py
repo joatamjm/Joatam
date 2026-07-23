@@ -8,13 +8,9 @@ from google import genai
 
 client_ai = genai.Client(api_key=os.environ["GEMINI_API_KEY"])
 
-prompt = """Gere um relatório diário sobre 5 frases em inglês dentre os níveis B2 a C1, 
-explicando o significado de cada frase e como usar em outros contextos. Quando for dar 
-definição de palavras use a Dictionary. Evite falar dos mesmos tópicos e temas de gramática.
+prompt = """Gere um relatório diário sobre 5 frases em inglês dentro dos níveis B2 a C1, explicando o significado de cada frase e como usar em outros contextos. Quando for dar definição de palavras use a Dictionary. Evite falar dos mesmos tópicos e temas de gramática.
 
-1 texto em inglês de até 1000 palavras. Temas: desenvolvimento pessoal, produtividade, 
-comportamento humano e outros temas semelhantes. Sempre traga um insight interessante 
-e/ou desconhecido, para me informar e treinar meu inglês.
+1 texto em inglês de até 1000 palavras. Temas: desenvolvimento pessoal, produtividade, comportamento humano e outros temas semelhantes. Sempre traga um insight interessante e/ou desconhecido, para me informar e treinar meu inglês.
 
 Um fato aleatório sobre conhecimentos gerais."""
 
@@ -23,7 +19,6 @@ response = client_ai.models.generate_content(
     contents=prompt,
 )
 
-)
 relatorio = response.text
 
 remetente = os.environ["EMAIL_FROM"]
@@ -41,3 +36,4 @@ with smtplib.SMTP_SSL("smtp.gmail.com", 465) as server:
     server.sendmail(remetente, destinatario, msg.as_string())
 
 print("Relatório enviado!")
+
