@@ -4,10 +4,9 @@ import os
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from datetime import datetime
-import google.generativeai as genai
+from google import genai
 
-genai.configure(api_key=os.environ["GEMINI_API_KEY"])
-model = genai.GenerativeModel("gemini-3.5-flash")
+client_ai = genai.Client(api_key=os.environ["GEMINI_API_KEY"])
 
 prompt = """Gere um relatório diário sobre 5 frases em inglês dentre os níveis B2 a C1, 
 explicando o significado de cada frase e como usar em outros contextos. Quando for dar 
@@ -19,7 +18,10 @@ e/ou desconhecido, para me informar e treinar meu inglês.
 
 Um fato aleatório sobre conhecimentos gerais."""
 
-response = model.generate_content(prompt)
+response = client_ai.models.generate_content(
+    model="gemini-2.5-flash",
+    contents=prompt
+)
 relatorio = response.text
 
 remetente = os.environ["EMAIL_FROM"]
