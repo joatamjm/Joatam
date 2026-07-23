@@ -19,7 +19,7 @@ e/ou desconhecido, para me informar e treinar meu inglês.
 Um fato aleatório sobre conhecimentos gerais."""
 
 response = client_ai.models.generate_content(
-    model="gemini-3.6-flash",
+    model="gemini-3.5-flash",
     contents=prompt
 )
 relatorio = response.text
