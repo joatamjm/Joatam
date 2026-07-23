@@ -20,7 +20,9 @@ Um fato aleatório sobre conhecimentos gerais."""
 
 response = client_ai.models.generate_content(
     model="gemini-1.5-flash",
-    contents=prompt
+    contents=prompt,
+)
+
 )
 relatorio = response.text
 
