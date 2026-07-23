@@ -7,7 +7,7 @@ from datetime import datetime
 import google.generativeai as genai
 
 genai.configure(api_key=os.environ["GEMINI_API_KEY"])
-model = genai.GenerativeModel("gemini-flash-latest")
+model = genai.GenerativeModel("gemini-3.5-flash")
 
 prompt = """Gere um relatório diário sobre 5 frases em inglês dentre os níveis B2 a C1, 
 explicando o significado de cada frase e como usar em outros contextos. Quando for dar 
